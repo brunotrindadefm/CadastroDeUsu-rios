@@ -1,0 +1,45 @@
+.notification {
+    position: fixed;
+    bottom: 20px;
+    left: -300px;
+    background-color: #fff;
+    color: #212121;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 2;
+    animation: arrived 0.35s ease-out forwards;
+
+    &.success {
+        background-color: #d4edda; 
+        color: #155724;
+    }
+
+    &.error {
+        background-color: #f8d7da;
+        color: #721c24; 
+    }
+    
+    @keyframes arrived {
+        from {
+            left: -300px; 
+        }
+        to {
+            left: 20px;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .notification {
+        animation: arrived-small 0.5s forwards;
+    }
+
+    @keyframes arrived-small {
+        from {
+            left: -300px; 
+        }
+        to {
+            left: 2px;
+        }
+    }
+}

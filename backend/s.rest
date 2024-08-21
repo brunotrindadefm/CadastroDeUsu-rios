@@ -1,0 +1,15 @@
+POST http://localhost:8000/users
+Content-Type: application/json
+
+###
+
+GET http://localhost:8000/users
+
+###
+
+DELETE http://localhost:8000/users:id
+
+###
+
+PUT http://localhost:8000/users/:id
+Content-Type: application/json

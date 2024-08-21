@@ -1,0 +1,22 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Diretórios temporários
+tmp/
+temp/
+
+# Arquivos de IDE
+.idea/
+.vscode/
+
+# Arquivo .env
+.env
+
+# Build files
+dist/
+build/

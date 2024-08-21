@@ -1,0 +1,130 @@
+.users {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #fff;
+  gap: 1rem;
+  padding: .8rem;
+  width: 1250px;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+
+  @media (max-width: 1300px) {
+    width: 97%;
+  }
+  @media(max-width: 800px) {
+    width: 250px;
+  }
+  @media(max-width: 350px) {
+    width: 90%;
+  }
+  
+  .user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #337ab7;
+    border-radius: 10px;
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+    
+    @media(max-width: 800px) {
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+
+    div {
+      span {
+        color: #fff;
+      }
+      p {
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: .2rem;
+    }
+    }
+    .edit-del {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      svg {
+        color: #fff;
+        cursor: pointer;
+        font-size: 1.5rem;
+        transition: 0.4s;
+        &:hover {
+            color: #ccc;
+        }
+      }
+      @media(max-width: 800px) {
+        margin-top: 1rem;
+      }
+    }
+  }
+  .editing {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+    div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 1rem;
+        background-color: #ccc;
+        border-radius: 10px;
+        @media(max-width: 800px) {
+            flex-direction: column;
+            gap: 1.2rem;
+          }
+      button {
+        background-color: #337ab7;
+        border-radius: 5px;
+        border: none;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        color: #fff;
+        transition: 0.4s;
+        &:hover {
+          background-color: #2e6697;
+        }
+      }
+      input {
+        width: 100%;
+        border-radius: 5px;
+        padding: 0.5rem 0.8rem;
+        border: 1px solid #ccc;
+
+        &:hover {
+          border-color: #aaa;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        &:focus {
+          border-color: #337ab7;
+          box-shadow: 0 0 2px #337ab7;
+        }
+
+        &::placeholder {
+          color: #999;
+        }
+
+        &.invalid {
+          border-color: red;
+          box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+        }
+      }
+    }
+  }
+}
