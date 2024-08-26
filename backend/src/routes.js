@@ -14,11 +14,10 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     dialect: 'mysql'
 });
 
-
 // Sincroniza o modelo com o banco de dados
 sequelize.sync()
     .then(() => console.log('Conectado no banco de dados'))
-    .catch(() => console.log('Erro ao conectar no banco de dados', error));
+    .catch((error) => console.log('Erro ao conectar no banco de dados', error));
 
 class User extends Model { }
 
