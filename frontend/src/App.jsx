@@ -2,8 +2,8 @@ import React from 'react'
 
 import './index.css'
 
-import Form from './components/Form'
-import Users from './components/Users'
+import Form from './components/Form/Form'
+import Users from './components/Users/Users'
 
 import { useState } from 'react'
 

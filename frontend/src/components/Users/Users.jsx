@@ -7,7 +7,7 @@ import { MdDeleteForever } from "react-icons/md";
 
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import Message from './Message';
+import Message from '../Message/Message';
 
 const Users = ({ onNewUser }) => {
 
@@ -17,7 +17,7 @@ const Users = ({ onNewUser }) => {
 
     const getUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/users')
+            const response = await axios.get('http://localhost:8000/api/users')
             setUsers(response.data)
         } catch (error) {
             if (error.response) {
@@ -31,7 +31,7 @@ const Users = ({ onNewUser }) => {
 
     const handleDeleteUser = async (userID) => {
         try {
-            const response = await axios.delete(`http://localhost:8000/users/${userID}`)
+            const response = await axios.delete(`http://localhost:8000/api/users/${userID}`)
             setMessage(response.data)
             setUsers(users.filter((user) => user.id !== userID));
         } catch (error) {
@@ -59,7 +59,7 @@ const Users = ({ onNewUser }) => {
                 age: Number(updatedUser.age)
             };
 
-            const response = await axios.put(`http://localhost:8000/users/${userCorrection.id}`, userCorrection)
+            const response = await axios.put(`http://localhost:8000/api/users/${userCorrection.id}`, userCorrection)
             const userIndex = users.findIndex((user) => user.id === userCorrection.id)
             setMessage(response.data)
             if (userIndex !== -1) {

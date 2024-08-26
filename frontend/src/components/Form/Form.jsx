@@ -4,7 +4,7 @@ import './Form.scss';
 
 import axios from 'axios';
 import { useState } from 'react';
-import Message from './Message';
+import Message from '../Message/Message';
 
 const Form = ({ onNewUser }) => {
 
@@ -17,7 +17,7 @@ const Form = ({ onNewUser }) => {
     const sendUsers = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/users', { name, lastName, profession, age });
+            const response = await axios.post('http://localhost:8000/api/users', { name, lastName, profession, age });
             setMessage(response.data);
             onNewUser({ name, lastName, profession, age })
             setName('');

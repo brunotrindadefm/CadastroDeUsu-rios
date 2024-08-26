@@ -1,61 +1,11 @@
-const express = require('express');
-const routes = express.Router();
-require('dotenv').config();
-
-// ORM (Object-Relational Mapper) para interagir com o banco de dados MySQL
-const { Sequelize } = require('sequelize');
-
-// Utilizados para definir o modelo User com Sequelize.
-const { Model, DataTypes } = require('sequelize');
-
-// Cria uma instância do Sequelize para conectar ao banco de dados
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOST,
-    dialect: 'mysql'
-});
-
-// Sincroniza o modelo com o banco de dados
-sequelize.sync()
-    .then(() => console.log('Conectado no banco de dados'))
-    .catch((error) => console.log('Erro ao conectar no banco de dados', error));
-
-class User extends Model { }
-
-User.init({
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
-    },
-    name: {
-        type: DataTypes.STRING(30),
-        allowNull: false
-    },
-    lastName: {
-        type: DataTypes.STRING(30),
-        allowNull: false
-    },
-    profession: {
-        type: DataTypes.STRING(70),
-        allowNull: false
-    },
-    age: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    }
-}, {
-    sequelize,
-    modelName: 'User',
-    tableName: 'users',
-    timestamps: true
-});
+const User = require('../models/userModels');
 
 // Método para transformar a primeira letra em maiúscula e o resto em minúscula
 const capitalizeFirstLetter = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
-routes.post('/users', async (req, res) => {
+const createUser = async (req, res) => {
     try {
+
         const { name, lastName, profession, age } = req.body;
 
         // Validações
@@ -73,53 +23,50 @@ routes.post('/users', async (req, res) => {
         const capitalizedLastName = capitalizeFirstLetter(lastName);
         const capitalizedProfession = capitalizeFirstLetter(profession);
 
-        // Criando o usuário pegando o que foi digitado no form do frontend
+        // Criando o usuário
         await User.create({ name: capitalizedFirstName, lastName: capitalizedLastName, profession: capitalizedProfession, age });
         res.status(201).send('Usuário cadastrado com sucesso');
+
     } catch (error) {
         console.error(error);
         res.status(500).send('Erro interno do servidor');
-    }
-});
+    };
+};
 
-routes.get('/users', async (req, res) => {
+const getUsers = async (req, res) => {
     try {
-        // findAll() = select * from users;
-        const users = await User.findAll();
-        if (users.length === 0) return res.status(404).send('Nenhum usuário cadastrado');
 
-        // Retornando todos os usuários
+        const users = await User.findAll();
+        if (users.length === 0) return res.status(404).send('Erro. Nenhum usuário cadastrado.')
         res.json(users);
 
     } catch (error) {
-        res.status(500).send('Erro ao buscar usuários')
+        console.log(error.message);
+        res.status(500).send('Erro interno no servidor')
     }
-});
+};
 
-routes.delete('/users/:id', async (req, res) => {
-    const userId = parseInt(req.params.id);
-
+const deleteUser = async (req, res) => {
     try {
-        // findByPk método para achar o usuário pelo id;
+
+        const userId = Number(req.params.id);
         const user = await User.findByPk(userId);
-
-        if (!user) return res.status(404).send('Erro. Usuário não encontrado!');
-
-        // Excluindo usuário
+        if (!user) return res.status(404).send('Erro. Usuário não encontrado.');
         await user.destroy();
-
         res.status(200).send('Usuário deletado com sucesso');
-    } catch (error) {
-        res.status(500).send('Erro ao deletar usuário');
-    }
-});
 
-routes.put('/users/:id', async (req, res) => {
-    const { name, lastName, profession, age } = req.body;
-    const userId = parseInt(req.params.id);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send('Erro interno no servidor');
+    }
+};
+
+const updateUser = async (req, res) => {
     try {
 
-        //  findByPk método para achar o usuário pelo id;
+        const { name, lastName, profession, age } = req.body;
+        const userId = Number(req.params.id);
+
         const user = await User.findByPk(userId);
         if (!user) return res.status(404).send('Erro. Usuário não encontrado!');
 
@@ -132,13 +79,18 @@ routes.put('/users/:id', async (req, res) => {
         if (!/[a-zA-Z]/.test(lastName)) return res.status(400).send('Erro. Sobrenome deve conter letras');
         if (!/[a-zA-Z]/.test(profession)) return res.status(400).send('Erro. Profissão deve conter letras');
 
-        // Atualizando o usuário pegando o que foi digitado no edit do frontend
         await user.update({ name, lastName, profession, age });
-        res.send('Usuário atualizado com sucesso!');
-    } catch (error) {
-        console.error('Erro ao atualizar usuário:', error);
-        res.status(500).send('Erro ao atualizar usuário');
-    }
-});
+        res.status(201).send('Usuário editado com sucesso!')
 
-module.exports = routes;
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send('Erro interno no servidor.');
+    }
+};
+
+module.exports = {
+    createUser,
+    getUsers,
+    deleteUser,
+    updateUser
+};
